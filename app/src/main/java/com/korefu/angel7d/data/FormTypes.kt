@@ -1,4 +1,6 @@
-package com.korefu.angel7d
+package com.korefu.angel7d.data
+
+import com.korefu.angel7d.R
 
 enum class FormTypes(
     val titleId: Int,
