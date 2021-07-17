@@ -81,7 +81,9 @@ fun AboutScreen(
                         )
                     ) {
                         append(stringResource(R.string.contacts_desc))
+                        append("\n")
                         append(stringResource(R.string.email_colon_space))
+                        append("\n")
                         withStyle(
                             style = linkStyle
                         ) {
