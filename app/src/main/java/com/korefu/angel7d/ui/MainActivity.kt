@@ -9,7 +9,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -25,17 +24,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.korefu.angel7d.R
-import com.korefu.angel7d.data.FormTypes
+import com.korefu.angel7d.data.EmailDestination
+import com.korefu.angel7d.data.FormType
 import com.korefu.angel7d.ui.about.AboutScreen
+import com.korefu.angel7d.ui.common.MessageForm
 import com.korefu.angel7d.ui.feedback.FeedbackScreen
 import com.korefu.angel7d.ui.theme.Angel7DTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -45,17 +45,37 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Angel7DTheme {
-                val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "main") {
-                    composable(route = "main") {
-                        MainScreen(navController)
-                    }
-                    composable(route = "main/contacts") {
-                        AboutScreen()
-                    }
-                    composable(route = FormTypes.FEEDBACK.name) {
-                        FeedbackScreen()
-                    }
+                Surface(color = MaterialTheme.colors.background) {
+                    val drawerState = rememberDrawerState(DrawerValue.Closed)
+                    val coroutineScope = rememberCoroutineScope()
+                    val navController = rememberNavController()
+                    ModalDrawer(
+                        drawerState = drawerState,
+                        content = {
+                            NavHost(navController = navController, startDestination = "main") {
+                                composable(route = "main") {
+                                    MainScreen(
+                                        coroutineScope = coroutineScope,
+                                        drawerState = drawerState
+                                    )
+                                }
+                                composable(route = "main/contacts") {
+                                    AboutScreen(navController)
+                                }
+                                composable(route = "main/${FormType.FEEDBACK.name}") {
+                                    FeedbackScreen(navController)
+                                }
+                            }
+                        },
+                        drawerContent = {
+                            DrawerBody(onItemClick = {
+                                navController.navigate("main${it}") {
+                                    popUpTo("main")
+                                    launchSingleTop = true
+                                }
+                                coroutineScope.launch { drawerState.close() }
+                            })
+                        })
                 }
             }
 
@@ -64,49 +84,42 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainViewModel = viewModel()) {
-    // A surface container using the 'background' color from the theme
-    Surface(color = MaterialTheme.colors.background) {
-        val drawerState = rememberDrawerState(DrawerValue.Closed)
-        val scope = rememberCoroutineScope()
-        ModalDrawer(
-            drawerState = drawerState,
-            content = {
-                Body(
-                    onMenuClick = { scope.launch { drawerState.open() } },
-                    onButtonClick = { name, message, contactInfo, town ->
-                        viewModel.viewModelScope.launch {
-                            viewModel.sendMessage(name, message, contactInfo, town)
-                        }
-                    })
-            },
-            drawerContent = {
-                DrawerBody(onItemClick = {
-                    navController.navigate("main/${it}")
-                })
-            })
-    }
+fun MainScreen(
+    coroutineScope: CoroutineScope,
+    drawerState: DrawerState
+) {
+    Body(
+        onMenuClick = { coroutineScope.launch { drawerState.open() } })
 }
 
 @Composable
-fun Body(onMenuClick: () -> Unit, onButtonClick: (String, String, String, String) -> Unit) {
+fun Body(onMenuClick: () -> Unit) {
     val scrollState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         Title(onMenuClick = onMenuClick)
         HelpOfferItem(
             painter = painterResource(R.drawable.psycho_help),
-            formType = FormTypes.PSYCHOLOGICAL,
-            onButtonClick = onButtonClick
+            formType = FormType.PSYCHOLOGICAL,
+            emailDestinations = listOf(
+                EmailDestination.EMAIL_COMMON,
+                EmailDestination.EMAIL_PSYCHOLOGICAL
+            )
         )
         HelpOfferItem(
             painter = painterResource(id = R.drawable.advice_help),
-            formType = FormTypes.ADVICE,
-            onButtonClick = onButtonClick
+            formType = FormType.ADVICE,
+            emailDestinations = listOf(
+                EmailDestination.EMAIL_COMMON,
+                EmailDestination.EMAIL_ADVICE
+            )
         )
         HelpOfferItem(
             painter = painterResource(id = R.drawable.prayer_help),
-            formType = FormTypes.PRAYER,
-            onButtonClick = onButtonClick
+            formType = FormType.PRAYER,
+            emailDestinations = listOf(
+                EmailDestination.EMAIL_COMMON,
+                EmailDestination.EMAIL_PRAYER
+            )
         )
     }
 }
@@ -115,14 +128,10 @@ fun Body(onMenuClick: () -> Unit, onButtonClick: (String, String, String, String
 @Composable
 fun HelpOfferItem(
     painter: Painter,
-    formType: FormTypes,
-    onButtonClick: (String, String, String, String) -> Unit
+    formType: FormType,
+    emailDestinations: List<EmailDestination>
 ) {
     var isExpanded by remember { mutableStateOf(false) }
-    var nameTextField by remember { mutableStateOf("") }
-    var messageTextField by remember { mutableStateOf("") }
-    var contactInfoTextField by remember { mutableStateOf("") }
-    var townTextField by remember { mutableStateOf("") }
     Card(
         elevation = 4.dp,
         shape = RoundedCornerShape(12.dp),
@@ -157,51 +166,9 @@ fun HelpOfferItem(
                 modifier = Modifier.padding(8.dp)
             )
             if (isExpanded) {
-                val commonModifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp, 8.dp, 16.dp, 8.dp)
-                TextField(
-                    value = nameTextField, onValueChange = { nameTextField = it },
-                    label = {
-                        Text("Введите ваше имя")
-                    }, modifier = commonModifier
-                )
-                TextField(
-                    value = messageTextField, onValueChange = { messageTextField = it },
-                    label = {
-                        Text("Ваше сообщение")
-                    }, modifier = commonModifier
-                )
-                TextField(
-                    value = contactInfoTextField,
-                    onValueChange = { contactInfoTextField = it },
-                    label = {
-                        Text("Введите куда Вам ответить")
-                    }, modifier = commonModifier
-                )
-                TextField(
-                    value = townTextField, onValueChange = { townTextField = it },
-                    label = {
-                        Text("С какого Вы города?")
-                    }, modifier = commonModifier
-                )
-                Button(
-                    shape = RoundedCornerShape(12.dp),
-                    content = {
-                        Text(
-                            text = "Отправить сообщение",
-                            modifier = Modifier.padding(8.dp)
-                        )
-                    },
-                    modifier = commonModifier,
-                    onClick = {
-                        onButtonClick(
-                            nameTextField,
-                            messageTextField,
-                            contactInfoTextField,
-                            townTextField
-                        )
-                    }
+                MessageForm(
+                    emailDestinations = emailDestinations,
+                    formType = formType
                 )
             }
         }

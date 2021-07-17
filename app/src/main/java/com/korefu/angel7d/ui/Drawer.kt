@@ -15,25 +15,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.korefu.angel7d.R
-import com.korefu.angel7d.data.FormTypes
+import com.korefu.angel7d.data.FormType
 
 @Composable
 fun DrawerBody(onItemClick: (String) -> Unit) {
     Column {
         DrawerHeader()
         Divider()
+        DrawerItemMenu(text = stringResource(R.string.main_page), onItemClick = onItemClick, route = "")
         DrawerItemMenu(
-            text = stringResource(FormTypes.FEEDBACK.titleId),
+            text = stringResource(FormType.FEEDBACK.titleId),
             onItemClick = onItemClick,
-            route = FormTypes.FEEDBACK.name
+            route = "/" + FormType.FEEDBACK.name
         )
         DrawerItemMenu(
             text = stringResource(R.string.additional_info),
             onItemClick = onItemClick,
-            route = "contacts"
+            route = "/contacts"
         )
         Divider()
-        DrawerItemHeader(text = "Полезные ссылки")
+        DrawerItemHeader(text = stringResource(R.string.useful_links))
         DrawerItemLink(text = "7D формат", url = "http://proekt7d.ru/")
         DrawerItemLink(text = "Сокрытое сокровище", url = "http://sokrsokr.net/")
     }

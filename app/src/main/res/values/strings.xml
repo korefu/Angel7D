@@ -17,4 +17,22 @@
     <string name="feedback_desc">Вы можете оставить здесь отзыв или написать предложения по улучшению работы.</string>
     <string name="donations_text">Благодаря вам мы сможем помочь людям попавшим в трудную ситуацию, которым нужна финансовая помощь.\nПожалуйста сообщайте, что пожертвовали средства.\nОбязательно укажите контактную информацию, по которой мы можем с вами связаться\nИз какого Вы города</string>
     <string name="additional_info">Дополнительная информация</string>
+    <string name="contacts_desc">По всем вопросам сотрудничества и другим интересующих вас вопросам можете связаться с нами:</string>
+    <string name="email_colon_space">\"Электронная почта: \"</string>
+    <string name="vk_page">Страница Вконтакте</string>
+    <string name="you_can_call">\"Вы можете звонить по Viber, Telegram, WhatsApp или горячей линии: \"</string>
+    <string name="requisites">Карта Тинькофф: 5536 9139 3849 8520\nСбоев Александр Юрьевич</string>
+    <string name="write_your_name">Введите ваше имя</string>
+    <string name="your_message">Ваше сообщение</string>
+    <string name="your_email_or_phone">Ваша эл. почта или телефон</string>
+    <string name="your_city">С какого Вы города?</string>
+    <string name="send_message">Отправить сообщение</string>
+    <string name="network_error">Ошибка соединения с сетью</string>
+    <string name="message_sent">Ваше сообщение отправлено</string>
+    <string name="rate_us">Оцените нашу работу</string>
+    <string name="main_page">Главная</string>
+    <string name="useful_links">Полезные ссылки</string>
+    <string name="title_line_one">7 дней в неделю мы готовы прийти на помощь.</string>
+    <string name="title_line_two">Ангелы всегда рядом</string>
+    <string name="title_line_three">Профессиональные психологи готовы вам помочь!</string>
 </resources>

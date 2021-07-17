@@ -11,9 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.korefu.angel7d.R
 import com.korefu.angel7d.ui.common.AppHeader
 
 @Composable
@@ -36,21 +38,21 @@ fun Title(onMenuClick: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "7 дней в неделю мы готовы прийти на помощь.",
+                text = stringResource(R.string.title_line_one),
                 fontSize = 32.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(4.dp),
                 color = Color.White
             )
             Text(
-                text = "Ангелы всегда рядом",
+                text = stringResource(R.string.title_line_two),
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(4.dp),
                 color = Color.White
             )
             Text(
-                text = "Профессиональные психологи готовы вам помочь!",
+                text = stringResource(R.string.title_line_three),
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(4.dp),

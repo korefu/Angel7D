@@ -2,6 +2,9 @@
 buildscript {
     ext {
         compose_version = '1.0.0-rc02'
+        gsonVersion = '2.8.7'
+        retrofitVersion = '2.9.0'
+        okhttpLoggingVersion = '5.0.0-alpha.2'
     }
     repositories {
         google()

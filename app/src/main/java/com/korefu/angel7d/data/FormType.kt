@@ -2,7 +2,7 @@ package com.korefu.angel7d.data
 
 import com.korefu.angel7d.R
 
-enum class FormTypes(
+enum class FormType(
     val titleId: Int,
     val shortDescriptionId: Int,
     val longDescriptionId: Int
@@ -21,11 +21,6 @@ enum class FormTypes(
         R.string.prayer_help_title,
         R.string.prayer_help_desc_short,
         R.string.prayer_help_desc_long
-    ),
-    QUESTION(
-        R.string.question_title,
-        R.string.question_desc,
-        R.string.question_desc
     ),
     FEEDBACK(
         R.string.feedback_title,
