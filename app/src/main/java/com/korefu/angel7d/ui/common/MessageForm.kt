@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.korefu.angel7d.R
 import com.korefu.angel7d.data.EmailDestination
 import com.korefu.angel7d.data.FormData
@@ -28,7 +27,7 @@ import kotlinx.coroutines.launch
 fun MessageForm(
     emailDestinations: List<EmailDestination>,
     formType: FormType,
-    viewModel: MessageFormViewModel = viewModel()
+    viewModel: MessageFormViewModel = remember { MessageFormViewModel() }
 ) {
     var nameTextField by remember { mutableStateOf("") }
     var messageTextField by remember { mutableStateOf("") }
