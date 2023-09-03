@@ -98,8 +98,13 @@ fun AboutScreen(
                         withStyle(
                             style = linkStyle
                         ) {
-                            append(stringResource(R.string.vk_page))
-                            pop(pushStringAnnotation("URL", "https://vk.com/turbo_ezhuk"))
+                            val text = stringResource(R.string.vk_page)
+                            withAnnotation(
+                                tag = "URL",
+                                annotation = "https://vk.com/turbo_ezhuk"
+                            ) {
+                                append(text)
+                            }
                         }
                         append("\n")
                         append(stringResource(R.string.you_can_call))
