@@ -14,8 +14,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Card
+import androidx.compose.material.DrawerState
+import androidx.compose.material.DrawerValue
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalDrawer
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.rememberDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -24,7 +36,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -111,14 +122,6 @@ fun Body(onMenuClick: () -> Unit) {
             emailDestinations = listOf(
                 EmailDestination.EMAIL_COMMON,
                 EmailDestination.EMAIL_ADVICE
-            )
-        )
-        HelpOfferItem(
-            painter = painterResource(id = R.drawable.prayer_help),
-            formType = FormType.PRAYER,
-            emailDestinations = listOf(
-                EmailDestination.EMAIL_COMMON,
-                EmailDestination.EMAIL_PRAYER
             )
         )
     }

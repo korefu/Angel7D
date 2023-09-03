@@ -8,7 +8,7 @@ enum class FormType(
     val longDescriptionId: Int
 ) {
     PSYCHOLOGICAL(
-        R.string.psycho_help_title,
+        R.string.psycho_tatneft_help_title,
         R.string.psycho_help_desc_short,
         R.string.psycho_help_desc_long
     ),
